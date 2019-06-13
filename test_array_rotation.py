@@ -16,7 +16,7 @@ def rotate_one_by_one(arr,d):
 
 def rotate_juggling_algo(arr,d):
 	n = len(arr)
-	from fractions import gcd
+	from math import gcd
 	for m in range(gcd(n,d)):
 		tmp = arr[m]
 		i = m
@@ -41,29 +41,37 @@ def rotate_reverse_algo(arr,d):
 	reverse_arr(arr,0,n)
 	return
 
-
+test_data = [
+	([1,2,3,4,5,6,7],3,[4,5,6,7,1,2,3]),
+	([1,2,3,4,5,6,7],4,[5,6,7,1,2,3,4]),
+	([2,3,4,5,6],5,[2,3,4,5,6]),
+	([],0,[])
+]
 
 @pytest.mark.parametrize(
-	'func,arr,d,expect_r',[
-		(rotate_using_tmp_array,[1,2,3,4,5,6,7],3,[4,5,6,7,1,2,3]),
-		(rotate_one_by_one,[1,2,3,4,5,6,7],3,[4,5,6,7,1,2,3]),
-		(rotate_juggling_algo,[1,2,3,4,5,6,7],3,[4,5,6,7,1,2,3]),
-		(rotate_reverse_algo,[1,2,3,4,5,6,7],3,[4,5,6,7,1,2,3])
-	]
-)
-def test_using_tmp_array(func,arr,d,expect_r):
-	a = arr
-	func(a,d)
-	assert a == expect_r
+	'arr,d,expected_r',test_data)
+def test_rotate_using_tmp_array(arr,d,expected_r):
+	a = arr.copy()
+	rotate_using_tmp_array(a, d)
+	assert a ==expected_r
 
-# arr = [1,2,3,4,5,6,7]
-# rotate_using_tmp_array(arr, 3)
-# print arr
+@pytest.mark.parametrize(
+	'arr,d,expected_r',test_data)
+def test_rotate_one_by_one(arr,d,expected_r):
+	a = arr.copy().copy()
+	rotate_one_by_one(a, d)
+	assert a ==expected_r
 
-# arr = [1,2,3,4,5,6,7]
-# rotate_one_by_one(arr, 3)
-# print arr
+@pytest.mark.parametrize(
+	'arr,d,expected_r',test_data)
+def test_rotate_juggling_algo(arr,d,expected_r):
+	a = arr.copy()
+	rotate_juggling_algo(a, d)
+	assert a ==expected_r
 
-# arr = [1,2,3,4,5,6,7]
-# rotate_juggling_algo(arr, 3)
-# print arr
+@pytest.mark.parametrize(
+	'arr,d,expected_r',test_data)
+def test_rotate_reverse_algo(arr,d,expected_r):
+	a = arr.copy()
+	rotate_reverse_algo(a, d)
+	assert a ==expected_r

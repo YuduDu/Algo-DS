@@ -41,6 +41,34 @@ def rotate_reverse_algo(arr,d):
 	reverse_arr(arr,0,n)
 	return
 
+
+def rotate_use_block_swap(arr,d):
+	if d%len(arr)==0:
+		return 
+	def swap(l,r,s):
+		assert l<=r
+		for i in range(l,r+1):
+			tmp = arr[i]
+			arr[i] = arr[s+i-l]
+			arr[s+i-l] = tmp
+
+	start = 0
+	end = len(arr)-1
+	a = d
+	b = len(arr)-d
+
+	while a != b:
+		if a < b:
+			swap(start,start+a-1,end-a+1)
+			end = end - a
+			b = b - a
+		else:
+			swap(start,start+b-1,end-b+1)
+			start = start + b
+			a = a - b
+	swap(start,start+a-1,end-b+1)
+
+
 test_data = [
 	([1,2,3,4,5,6,7],3,[4,5,6,7,1,2,3]),
 	([1,2,3,4,5,6,7],4,[5,6,7,1,2,3,4]),
@@ -74,4 +102,11 @@ def test_rotate_juggling_algo(arr,d,expected_r):
 def test_rotate_reverse_algo(arr,d,expected_r):
 	a = arr.copy()
 	rotate_reverse_algo(a, d)
+	assert a ==expected_r
+
+@pytest.mark.parametrize(
+	'arr,d,expected_r',test_data)
+def test_rotate_use_block_swap(arr,d,expected_r):
+	a = arr.copy()
+	rotate_use_block_swap(a, d)
 	assert a ==expected_r
